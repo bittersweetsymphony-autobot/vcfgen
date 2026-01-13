@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCF Contact Generator (4-Column Mode)</title>
+    <title>VCF Generator | 4-Column Mode</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -18,113 +18,69 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding: 1rem; }
-        .container { max-width: 768px; margin: 0 auto; padding: 1rem 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; padding: 1.5rem; }
+        .container { max-width: 768px; margin: 0 auto; }
         
         header { text-align: center; margin-bottom: 2rem; }
-        .icon-box { display: inline-flex; padding: 0.75rem; background: var(--primary); border-radius: 1rem; color: white; margin-bottom: 1rem; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); }
-        h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
-        .subtitle { color: var(--text-sub); margin-top: 0.5rem; }
-        
-        .badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; border-radius: 9999px; background: #ecfdf5; color: #065f46; border: 1px solid #d1fae5; margin-top: 1rem; }
+        .icon-box { display: inline-flex; padding: 0.75rem; background: var(--primary); border-radius: 1rem; color: white; margin-bottom: 1rem; }
+        h1 { font-size: 2rem; font-weight: 800; }
+        .subtitle { color: var(--text-sub); font-size: 0.9rem; }
         
         .card { background: var(--card); border-radius: 1.5rem; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; }
         .p-main { padding: 1.5rem; }
         
-        .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .label { font-size: 0.875rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; }
-        .hint { font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; gap: 0.25rem; }
-
-        textarea { width: 100%; height: 180px; padding: 1rem; border: 2px solid #f1f5f9; border-radius: 1rem; outline: none; transition: all 0.2s; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.875rem; resize: vertical; }
-        textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+        .label { font-size: 0.75rem; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.5rem; }
+        textarea { width: 100%; height: 180px; padding: 1rem; border: 2px solid #f1f5f9; border-radius: 1rem; outline: none; font-family: monospace; font-size: 0.85rem; resize: vertical; }
+        textarea:focus { border-color: var(--primary); }
         
-        .tip-text { font-size: 11px; color: #94a3b8; margin-top: 0.5rem; font-style: italic; }
-
         .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
         @media (max-width: 640px) { .config-grid { grid-template-columns: 1fr; } }
 
-        .suffix-box { background: var(--bg); padding: 1rem; border-radius: 1rem; border: 1px solid var(--border); }
-        .suffix-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center; }
-        .suffix-ex { font-size: 10px; background: #dbeafe; color: #1e40af; padding: 0.125rem 0.375rem; border-radius: 4px; font-weight: 600; }
-        
+        .input-group { background: var(--bg); padding: 1rem; border-radius: 1rem; border: 1px solid var(--border); }
         input { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.75rem; outline: none; font-size: 0.875rem; }
-        input:focus { border-color: var(--primary); ring: 2px solid var(--primary); }
 
-        .btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; width: 100%; }
-        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 6px -1px rgba(37,99,235,0.2); }
-        .btn-primary:hover { background: var(--primary-hover); }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem; border-radius: 0.75rem; font-weight: 700; cursor: pointer; border: none; transition: 0.2s; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; }
         .btn-clear { background: white; border: 1px solid var(--border); color: var(--text-sub); }
-        .btn-clear:hover { background: var(--bg); }
-        .btn-download { background: var(--success); color: white; font-size: 1.125rem; padding: 1.25rem; border-radius: 1rem; margin-top: 1rem; }
-        .btn-download:hover { background: var(--success-hover); }
-        .btn:active { transform: scale(0.98); }
+        .btn-download { background: var(--success); color: white; font-size: 1.1rem; padding: 1.25rem; border-radius: 1rem; margin-top: 1rem; }
 
-        #statusBox { padding: 0.75rem 2rem; font-size: 0.875rem; font-weight: 600; border-top: 1px solid var(--border); display: none; align-items: center; gap: 0.5rem; }
+        #statusBox { padding: 1rem; font-size: 0.85rem; font-weight: 600; border-top: 1px solid var(--border); display: none; text-align: center; }
         .status-amber { background: #fffbeb; color: #92400e; }
         .status-emerald { background: #ecfdf5; color: #065f46; }
 
         .results { padding: 1.5rem; background: var(--bg); border-top: 1px solid var(--border); display: none; }
-        .res-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem; }
-        .count-tag { background: #dbeafe; color: #1e40af; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 0.375rem; }
-        
         .preview-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; max-height: 200px; overflow-y: auto; padding-right: 0.5rem; }
         @media (max-width: 480px) { .preview-list { grid-template-columns: 1fr; } }
-        .prev-item { background: white; padding: 0.75rem; border-radius: 0.75rem; border: 1px solid var(--border); display: flex; flex-direction: column; }
-        .prev-name { font-weight: 700; font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .prev-phone { font-family: monospace; font-size: 0.65rem; color: var(--text-sub); margin-top: 0.25rem; }
+        .prev-item { background: white; padding: 0.75rem; border-radius: 0.75rem; border: 1px solid var(--border); }
+        .prev-name { font-weight: 700; font-size: 0.85rem; word-break: break-all; }
+        .prev-phone { font-family: monospace; font-size: 0.7rem; color: var(--text-sub); margin-top: 0.2rem; }
         
-        footer { margin-top: 3rem; text-align: center; font-size: 0.75rem; color: #94a3b8; padding-bottom: 2rem; }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        footer { margin-top: 2rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="icon-box">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
             </div>
             <h1>VCF Generator</h1>
-            <p class="subtitle">Supports: Name, Class, Parent, Contact</p>
-            <div class="badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Privacy Guaranteed: Local Processing Only
-            </div>
+            <p class="subtitle">Student_Class_Parent_Suffix</p>
         </header>
 
         <div class="card">
             <div class="p-main">
-                <div class="label-row">
-                    <label class="label">Paste 4 Columns</label>
-                    <div class="hint">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-                        Excel / Google Sheets
-                    </div>
-                </div>
+                <label class="label">Paste Data (4 Columns Recommended)</label>
+                <textarea id="inputText" placeholder="Example:&#10;John Doe	Class 10	Mr. Smith	9876543210"></textarea>
                 
-                <textarea id="inputText" placeholder="Paste columns here: Student | Class | Parent | Phone"></textarea>
-                <p class="tip-text">Format will be: StudentName_ClassName_ParentName</p>
-
                 <div class="config-grid">
-                    <div class="suffix-box">
-                        <div class="suffix-header">
-                            <label class="label" style="font-size: 0.75rem;">Add Suffix <span style="font-weight: 400; color: #94a3b8;">(Optional)</span></label>
-                            <span class="suffix-ex">Ex: "Vladimir Trump-China"</span>
-                        </div>
-                        <input id="suffix" type="text" oninput="renderPreview()" placeholder="e.g. Batch 2024">
+                    <div class="input-group">
+                        <label class="label" style="font-size: 0.65rem;">Custom Suffix (Optional)</label>
+                        <input id="suffix" type="text" oninput="renderPreview()" placeholder="e.g. 2024">
                     </div>
-
                     <div style="display: flex; flex-direction: column; gap: 0.5rem; justify-content: flex-end;">
-                        <button onclick="parseContacts()" class="btn btn-primary">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                            Preview Contacts
-                        </button>
-                        <button onclick="clearAll()" class="btn btn-clear">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                            Clear All
-                        </button>
+                        <button onclick="parseContacts()" class="btn btn-primary">Preview Contacts</button>
+                        <button onclick="clearAll()" class="btn btn-clear">Clear All</button>
                     </div>
                 </div>
             </div>
@@ -132,21 +88,12 @@
             <div id="statusBox"></div>
 
             <div id="resultsArea" class="results">
-                <div class="res-header">
-                    <h2 style="font-weight: 800; font-size: 1.25rem;">Ready to Export</h2>
-                    <span id="contactCount" class="count-tag">0 Contacts</span>
-                </div>
-                <div id="previewList" class="preview-list custom-scrollbar"></div>
-                <button onclick="generateVCF()" class="btn btn-download">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download All (.vcf)
-                </button>
+                <div id="previewList" class="preview-list"></div>
+                <button onclick="generateVCF()" class="btn btn-download">Download .VCF File</button>
             </div>
         </div>
 
-        <footer>
-            <p>Processing happens locally in your browser. No data is stored or sent to servers.</p>
-        </footer>
+        <footer><p>Data is processed 100% locally. Safe for college use.</p></footer>
     </div>
 
     <script>
@@ -154,60 +101,41 @@
 
         function parseContacts() {
             const input = document.getElementById('inputText').value.trim();
-            if (!input) {
-                showStatus('Please paste some data first.', 'amber');
-                return;
-            }
+            if (!input) { showStatus('Please paste your data first.', 'amber'); return; }
 
             const lines = input.split('\n');
             currentContacts = lines.map(line => {
-                // Split by tabs, commas, or semicolons
-                let parts = line.split(/\t|,|;/).map(p => p.trim()).filter(p => p !== "");
-                
+                // Split by tabs (Excel default) or commas
+                let parts = line.split(/\t|,/).map(p => p.trim()).filter(p => p !== "");
                 if (parts.length < 2) return null;
 
                 let phone = '';
-                let nameParts = [];
+                let phoneIndex = -1;
+                let maxDigits = 0;
 
-                // Logic: 
-                // 1. Identify the phone number (usually the last part or the one with many digits)
-                // 2. Everything else forms the name
-                
-                // For a 4-column student sheet, the last part is usually the phone
-                const lastPart = parts[parts.length - 1];
-                const cleanPhone = lastPart.replace(/[^\d+]/g, '');
-                
-                if (cleanPhone.length >= 7) {
-                    phone = cleanPhone;
-                    nameParts = parts.slice(0, parts.length - 1);
-                } else {
-                    // Search for phone in all parts as fallback
-                    for (let i = 0; i < parts.length; i++) {
-                        const p = parts[i].replace(/[^\d+]/g, '');
-                        if (p.length >= 7 && !phone) {
-                            phone = p;
-                        } else {
-                            nameParts.push(parts[i]);
-                        }
+                // Find the phone number column automatically
+                parts.forEach((part, index) => {
+                    const digits = part.replace(/\D/g, '');
+                    if (digits.length > maxDigits) {
+                        maxDigits = digits.length;
+                        phoneIndex = index;
+                        phone = digits;
                     }
-                }
+                });
 
-                if (nameParts.length > 0 && phone) {
-                    // Join names with underscore as requested
-                    return { 
-                        joinedName: nameParts.join('_'),
-                        phone: phone 
-                    };
+                if (phoneIndex !== -1 && maxDigits >= 7) {
+                    const nameParts = parts.filter((_, idx) => idx !== phoneIndex);
+                    return { joinedName: nameParts.join('_'), phone: phone };
                 }
                 return null;
-            }).filter(c => c && !c.joinedName.toLowerCase().includes('name') && !c.joinedName.toLowerCase().includes('timestamp'));
+            }).filter(c => c && !c.joinedName.toLowerCase().includes('name'));
 
             if (currentContacts.length === 0) {
-                showStatus('No contacts found. Check your columns.', 'amber');
+                showStatus('No contacts found. Make sure columns are separated by Tabs or Commas.', 'amber');
                 document.getElementById('resultsArea').style.display = 'none';
             } else {
                 renderPreview();
-                showStatus(`Successfully parsed ${currentContacts.length} contacts!`, 'emerald');
+                showStatus(`Successfully found ${currentContacts.length} contacts!`, 'emerald');
                 document.getElementById('resultsArea').style.display = 'block';
             }
         }
@@ -219,11 +147,10 @@
             
             list.innerHTML = currentContacts.map(c => `
                 <div class="prev-item">
-                    <span class="prev-name">${c.joinedName} <span style="color:var(--primary); font-weight:400;">${suffix}</span></span>
-                    <span class="prev-phone">${c.phone}</span>
+                    <div class="prev-name">${c.joinedName}${suffix ? '_' + suffix : ''}</div>
+                    <div class="prev-phone">${c.phone}</div>
                 </div>
             `).join('');
-            document.getElementById('contactCount').innerText = `${currentContacts.length} Contacts`;
         }
 
         function generateVCF() {
@@ -232,28 +159,28 @@
                 const finalName = suffix ? `${c.joinedName}_${suffix}` : c.joinedName;
                 return `BEGIN:VCARD\nVERSION:3.0\nFN:${finalName}\nTEL;TYPE=CELL:${c.phone}\nEND:VCARD`;
             }).join('\n');
-
+            
             const blob = new Blob([vcf], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `student_contacts_${Date.now()}.vcf`;
+            a.download = `contacts_${Date.now()}.vcf`;
             a.click();
-            showStatus('Download started!', 'emerald');
+            window.URL.revokeObjectURL(url);
         }
 
         function showStatus(msg, color) {
             const box = document.getElementById('statusBox');
             box.className = `status-${color}`;
-            box.style.display = 'flex';
-            box.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${msg}`;
+            box.style.display = 'block';
+            box.innerText = msg;
         }
 
         function clearAll() {
             document.getElementById('inputText').value = '';
             document.getElementById('suffix').value = '';
-            document.getElementById('statusBox').style.display = 'none';
             document.getElementById('resultsArea').style.display = 'none';
+            document.getElementById('statusBox').style.display = 'none';
             currentContacts = [];
         }
     </script>
